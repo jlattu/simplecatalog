@@ -13,5 +13,11 @@ def hello():
     return "Hello World!"
 
 
+@app.route("/add_test_data")
+def test_data():
+    populate_test_data()
+    return "Test data added!"
+
+
 if __name__ == "__main__":
     app.run()
