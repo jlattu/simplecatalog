@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import decimal
 
 
 db = None   # This variable is used for database connection later
@@ -32,9 +33,9 @@ def open_database_connection(self):
 
 
 def populate_test_data():
-    """Populates shirt table with products with ID range 1-250
+    """Populates shirt table with products with id range 1-250
 
-    If ID exists already, shirt won't be added
+    If id exists already, shirt won't be added
     :return: Number of shirts added to database
     """
     shirt_data_name = 'shirt_data.sql'
@@ -56,3 +57,31 @@ def populate_test_data():
         print(str(not_added) + ' shirts were not added because products with same ID existed already')
     db.commit()
     return len(sql_commands) - 1 - not_added
+
+
+def get_shirts():
+    """Fetches all shirts from database
+
+    :return: All shirts with all information except id
+    """
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+    cursor.execute("SELECT shirt_name, color, shirt_size, amount, price FROM shirt")
+    return result_as_json(cursor)
+
+
+def result_as_json(cursor):
+    """Converts database cursor result to JSON.
+
+    :param cursor: Result of SQL query
+    :return: JSONified result
+    """
+    rows = [x for x in cursor.fetchall()]
+    cols = [x[0] for x in cursor.description]
+    results = []
+    for row in rows:
+        result = {}
+        for prop, value in zip(cols, row):
+            result[prop] = value
+        results.append(result)
+    return results
