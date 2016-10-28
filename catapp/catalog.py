@@ -66,7 +66,7 @@ def get_shirts():
     """
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    cursor.execute("SELECT shirt_name, color, shirt_size, amount, price FROM shirt")
+    cursor.execute("SELECT * FROM shirt")
     return result_as_json(cursor)
 
 

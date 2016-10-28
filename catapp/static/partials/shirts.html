@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <meta charset="UTF-8">
+    <title>Shirts for everyone!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+</head>
+<body ng-app="catApp">
+    <div ng-controller="catalogCtrl">
+        <table border = 1>
+            <tr>
+                <th> Shirt name </th>
+                <th> Color </th>
+                <th> Size </th>
+                <th> Amount </th>
+                <th> Price € </th>
+            </tr>
+            <tr ng-repeat="x in shirts">
+                <td>{{ x.shirt_name }}</td>
+                <td>{{ x.color }}</td>
+                <td>{{ x.shirt_size }}</td>
+                <td>{{ x.amount }}</td>
+                <td>{{ x.price }}</td>
+            </tr>
+        </table>
+    </div>
+   </body>
+</html>

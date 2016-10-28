@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import *
 import json
 import catapp.catalog as catalog
 from catapp.catalog import *
@@ -11,7 +11,7 @@ open_database_connection(catalog)
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return send_file("templates/index.html")
 
 
 @app.route("/add_test_data")
@@ -21,9 +21,9 @@ def test_data():
 
 
 @app.route("/get_shirts")
-def asd_shirts():
-    return render_template('shirts.html', result=get_shirts())
+def fetch_shirts():
+    return jsonify(get_shirts()), 200
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
