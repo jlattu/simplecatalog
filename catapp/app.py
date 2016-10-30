@@ -25,7 +25,6 @@ def fetch_shirts():
     sorting_key = request.args.get('sorting_key')
     sorting_order = request.args.get('sorting_order')
     limit = request.args.get('sorting_limit')
-    offset = 0
     return jsonify(get_shirts(sorting_key, sorting_order, limit, offset)), 200
 
 

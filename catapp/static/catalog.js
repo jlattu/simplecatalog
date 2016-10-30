@@ -17,13 +17,16 @@ catApp.config(['$routeProvider',
 
 catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
 
-    $scope.sortingKey = "color";
+    $scope.sortingKey = "name";
     $scope.sortingOrder = "asc";
     $scope.sortingLimit = 25;
+    $scope.sortingOffset = 0;
+    $scope.previousDisabled = true;
 
     $scope.loadData = function () {
         $http.get('/get_shirts', {params: {sorting_key: $scope.sortingKey,
-        sorting_order: $scope.sortingOrder, sorting_limit: $scope.sortingLimit}}).success(function(data){
+        sorting_order: $scope.sortingOrder, sorting_limit: $scope.sortingLimit,
+        sorting_offset: $scope.sortingOffset}}).success(function(data){
             $scope.shirts = data;
            // console.log($scope.shirts);
         });
@@ -38,15 +41,37 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
             $scope.sortingKey = orderKey;
             $scope.sortingOrder = "asc";
         }
+        $scope.resetSortingOffset();
         $scope.loadData();
     };
 
     $scope.changeSortingLimit = function (sortingLimit) {
-        $scope.sortingLimit = sortingLimit;
+        $scope.sortingLimit = parseInt(sortingLimit);
+        $scope.resetSortingOffset();
+        $scope.loadData();
+    };
+
+    $scope.changeSortingOffset = function (change) {
+        if (change == '-') {
+            $scope.sortingOffset = $scope.sortingOffset - $scope.sortingLimit;
+            if ($scope.sortingOffset <= 0) {
+                $scope.resetSortingOffset();
+            }
+        }
+        else {
+            $scope.sortingOffset = $scope.sortingOffset + $scope.sortingLimit;
+            $scope.previousDisabled = false;
+            console.log($scope.shirts.length);
+        }
         $scope.loadData();
     };
 
     // Initial site load
     $scope.loadData();
+
+    $scope.resetSortingOffset = function () {
+        $scope.sortingOffset = 0;
+        $scope.previousDisabled = true;
+    };
 
 }]);
