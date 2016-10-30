@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app>
 <head>
+
     <meta charset="UTF-8">
     <title>Shirts for everyone!</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
@@ -36,31 +37,65 @@
                 <span class="error" ng-show="validationFailed">Required!</span>
             </div>
             <div>
-                Amount <input type="number" name="shirtAmount" ng-model="newShirt.amount" required>
+                Amount <input type="number" name="shirtAmount" ng-model="newShirt.amount" min="0" required>
             </div>
             <div>
-                Price <input type="number" name="shirtAmount" ng-model="newShirt.price" required>
+                Price <input type="number" name="shirtAmount"
+                             ng-model="newShirt.price" step="0.01" min="0" required>
             </div>
             <input type="submit">
         </form>
 
-        <table border = 1>
+        <table>
             <tr>
-                <th ng-click=changeSortingKey("name")></th>
+                <th ng-click=changeSortingKey("id")> ID</th>
+                <th ng-click=changeSortingKey("name")>Name</th>
                 <th ng-click=changeSortingKey("color")> Color </th>
                 <th ng-click=changeSortingKey("size")> Size </th>
                 <th ng-click=changeSortingKey("amount")> Amount </th>
                 <th ng-click=changeSortingKey("price")> Price € </th>
             </tr>
-            <tr ng-repeat="x in shirts">
-                <td>{{ x.name }}</td>
-                <td>{{ x.color }}</td>
-                <td>{{ x.size }}</td>
-                <td>{{ x.amount }}</td>
-                <td>{{ x.price }}</td>
-                <td><button ng-click="deleteShirt(x.id)">DELETE</button></td>
+            <tr ng-repeat="shirt in shirts" ng-include="getTemplate(shirt)">
+
             </tr>
         </table>
     </div>
+
+    <script type="text/ng-template" id="displayShirt">
+        <td id="p1">{{ shirt.id }}</td>
+        <td>{{ shirt.name }}</td>
+        <td id="colorbox">{{ shirt.color }}</td>
+        <td>{{ shirt.size }}</td>
+        <td>{{ shirt.amount }}</td>
+        <td>{{ shirt.price }}</td>
+        <td>
+            <button ng-click="editShirt(shirt)">Edit</button>
+            <button ng-click="deleteShirt(shirt.id)">Delete</button>
+        </td>
+    </script>
+    <script type="text/ng-template" id="editShirt">
+        <td>{{shirt.id}}</td>
+        <td>
+            <input type="text" ng-model="shirtSelected.name" />
+        </td>
+        <td>
+            <input type="text" ng-model="shirtSelected.color" />
+        </td>
+        <td>
+            <input type="text" ng-model="shirtSelected.size" />
+        </td>
+        <td>
+            <input type="number" ng-model="shirtSelected.amount" />
+        </td>
+        <td>
+            <input type="number" ng-model="shirtSelected.price" step="0.01" min="0"/>
+        </td>
+        <td>
+            <button ng-click="updateShirt($index)">Save</button>
+            <button ng-click="resetEdit()">Cancel</button>
+        </td>
+    </script>
+
+
    </body>
 </html>

@@ -78,6 +78,18 @@ def add_shirt(name: str, color: str, size: str, amount: int, price: float):
     return
 
 
+def update_shirt(shirt_id: int, name: str, color: str, size: str, amount: int, price: float):
+    cursor = db.cursor()
+    cursor.execute("""UPDATE shirt
+                    SET name = ?, color = ?, size = ?,
+                    amount = ?, price = ?
+                    WHERE id = ?
+                    """, [name, color, size, amount, price, shirt_id]
+                   )
+    db.commit()
+    return
+
+
 def delete_shirt(shirt_id: int):
     """Adds new shirt to database
 
@@ -101,7 +113,9 @@ def get_shirts(order_by: str, order: str, limit: int, offset: int):
     # Since table name can't be given as a parameter, we will have to include it as a string
     # Thus we use a bit tacky way to make absolutely sure there can't be sql injections
     # We could also make unique execute cases for all alternatives but this way we can more easily modify query itself
-    if order_by == "name":
+    if order_by == "id":
+        order_by == "id"
+    elif order_by == "name":
         order_by = "name"
     elif order_by == "color":
         order_by = "color"

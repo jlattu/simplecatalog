@@ -48,6 +48,27 @@ def add_new_shirt():
     return "Shirt added"
 
 
+@app.route("/update_shirt", methods=["POST"])
+def edit_shirt():
+    json_data = request.get_json()
+    print(json_data)
+    try:
+        shirt_id = json_data['id']
+        name = json_data['name']
+        color = json_data['color']
+        amount = json_data['amount']
+        price = json_data['price']
+        size = json_data['size']
+    except KeyError as e:
+        print("Missing data: " + e.args[0])
+        if str(e.args[0]) != "size":
+            return abort(400, "Missing data other than size")
+        print("Size will be M")
+        size = 'M'
+    update_shirt(shirt_id, name, color, size, amount, price)
+    return "Shirt updated"
+
+
 @app.route("/delete_shirt", methods=["POST"])
 def shirt_deletion():
     json_data = request.get_json()

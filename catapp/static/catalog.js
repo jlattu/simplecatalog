@@ -17,12 +17,13 @@ catApp.config(['$routeProvider',
 
 catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
 
-    $scope.sortingKey = "name";
+    $scope.sortingKey = "id";
     $scope.sortingOrder = "asc";
     $scope.sortingLimit = 25;
     $scope.sortingOffset = 0;
     $scope.previousDisabled = true;
     $scope.nextDisabled = false;
+    $scope.shirtSelected = {};
 
     $scope.shirtSizes = [
         {sizeID: 1, sizeName: 'XS'},
@@ -102,5 +103,32 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.previousDisabled = true;
         $scope.nextDisabled = false;
     };
+
+
+
+    // gets the template to ng-include for a table row / item
+    $scope.getTemplate = function(shirt) {
+        if (shirt.id === $scope.shirtSelected.id) return 'editShirt';
+        else return 'displayShirt';
+    };
+
+    $scope.editShirt = function(shirt) {
+        $scope.shirtSelected = angular.copy(shirt);
+    };
+
+    $scope.updateShirt = function(idx) {
+        console.log("Saving contact");
+        console.log($scope.shirtSelected);
+        $http.post('/update_shirt', JSON.stringify($scope.shirtSelected)).then(function (response) {
+            if (response.data) console.log(response);
+        });
+        $scope.shirts[idx] = angular.copy($scope.shirtSelected);
+        $scope.resetEdit();
+    };
+
+        $scope.resetEdit = function() {
+            $scope.shirtSelected = {};
+        };
+
 
 }]);
