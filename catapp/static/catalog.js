@@ -84,7 +84,14 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
             if (response.data) console.log(response);
             $scope.loadData();
         });
+    };
 
+    $scope.deleteShirt = function (shirt_id) {
+        var deletingData = {"id": + shirt_id};
+        $http.post('/delete_shirt', deletingData).then(function (response) {
+            if (response.data) console.log(response);
+            $scope.loadData();
+        });
     };
 
     // Initial site load

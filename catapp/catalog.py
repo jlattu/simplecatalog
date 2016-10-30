@@ -78,6 +78,21 @@ def add_shirt(name: str, color: str, size: str, amount: int, price: float):
     return
 
 
+def delete_shirt(shirt_id: int):
+    """Adds new shirt to database
+
+    :param shirt_id: Name of the shirt
+    :return:
+    """
+    cursor = db.cursor()
+    cursor.execute("""DELETE FROM shirt
+                    WHERE id = ?
+                    """, [shirt_id]
+                   )
+    db.commit()
+    return
+
+
 def get_shirts(order_by: str, order: str, limit: int, offset: int):
     """Fetches all shirts from database
 

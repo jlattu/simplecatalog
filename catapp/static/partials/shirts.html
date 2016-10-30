@@ -16,9 +16,37 @@
         </select>
         <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled"><</button>
         <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">></button>
+        <button ng-click=loadData()>Refresh</button>
+
+        <form name="newShirtForm" ng-submit="addNewShirt()">
+            <label>Add new shirt</label>
+            <div>
+                Name <input type="text" name="shirtName" ng-model="newShirt.name" required>
+            </div>
+            <div>
+                Color <input type="text" name="shirtColor" ng-model="newShirt.color" required>
+            </div>
+            <div>
+                Size
+                <select name="shirtSize" ng-model="newShirt.size">
+                    <option value="">Choose size</option>
+                    <option ng-repeat="size in shirtSizes"
+                            value="{{size.sizeName}}">{{size.sizeName}}</option>
+                </select>
+                <span class="error" ng-show="validationFailed">Required!</span>
+            </div>
+            <div>
+                Amount <input type="number" name="shirtAmount" ng-model="newShirt.amount" required>
+            </div>
+            <div>
+                Price <input type="number" name="shirtAmount" ng-model="newShirt.price" required>
+            </div>
+            <input type="submit">
+        </form>
+
         <table border = 1>
             <tr>
-                <th headers="name" ng-click=changeSortingKey("name")> Shirt name </th>
+                <th ng-click=changeSortingKey("name")></th>
                 <th ng-click=changeSortingKey("color")> Color </th>
                 <th ng-click=changeSortingKey("size")> Size </th>
                 <th ng-click=changeSortingKey("amount")> Amount </th>
@@ -30,6 +58,7 @@
                 <td>{{ x.size }}</td>
                 <td>{{ x.amount }}</td>
                 <td>{{ x.price }}</td>
+                <td><button ng-click="deleteShirt(x.id)">DELETE</button></td>
             </tr>
         </table>
     </div>
