@@ -22,6 +22,7 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.sortingLimit = 25;
     $scope.sortingOffset = 0;
     $scope.previousDisabled = true;
+    $scope.nextDisabled = false;
 
     $scope.loadData = function () {
         $http.get('/get_shirts', {params: {sorting_key: $scope.sortingKey,
@@ -57,11 +58,12 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
             if ($scope.sortingOffset <= 0) {
                 $scope.resetSortingOffset();
             }
+            else $scope.nextDisabled = false;
         }
         else {
             $scope.sortingOffset = $scope.sortingOffset + $scope.sortingLimit;
             $scope.previousDisabled = false;
-            console.log($scope.shirts.length);
+            if ($scope.shirts.length < $scope.sortingLimit) $scope.nextDisabled = true;
         }
         $scope.loadData();
     };
@@ -72,6 +74,7 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.resetSortingOffset = function () {
         $scope.sortingOffset = 0;
         $scope.previousDisabled = true;
+        $scope.nextDisabled = false;
     };
 
 }]);

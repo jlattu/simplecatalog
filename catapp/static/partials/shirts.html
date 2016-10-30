@@ -15,7 +15,7 @@
             <option value="250">250</option>
         </select>
         <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled"><</button>
-        <button ng-click=changeSortingOffset("+")>></button>
+        <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">></button>
         <table border = 1>
             <tr>
                 <th headers="name" ng-click=changeSortingKey("name")> Shirt name </th>
