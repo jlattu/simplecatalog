@@ -1,18 +1,16 @@
 import sqlite3
 import os
-import decimal
-
 
 db = None   # This variable is used for database connection later
 project_path = os.path.dirname(os.path.abspath(__file__))
 
 
 def open_database_connection(self):
-    """Open database connection and attach it to db variable
+    """Open database connection and attach it to db variable.
 
-    Also creates table for shirts if it doesn't exists yet
+    Also creates table for shirts if it doesn't exists yet.
     :param self:
-    :return:
+    :return: Nothing
     """
     database_name = 'catalog.db'
     database_path = project_path + '/' + database_name
@@ -33,9 +31,9 @@ def open_database_connection(self):
 
 
 def populate_test_data():
-    """Populates shirt table with products with id range 1-250
+    """Populates shirt table with products. Test data file has 500 rows as of writing this.
 
-    If id exists already, shirt won't be added
+    If id exists already, shirt won't be added.
     :return: Number of shirts added to database
     """
     shirt_data_name = 'shirt_data.sql'
@@ -54,55 +52,9 @@ def populate_test_data():
         except sqlite3.Error:
             not_added += 1
     if not_added > 0:
-        print(str(not_added) + ' shirts were not added because products with same ID existed already')
+        print(str(not_added) + ' shirts were not added because products with same id existed already')
     db.commit()
     return len(sql_commands) - 1 - not_added
-
-
-def add_shirt(name: str, color: str, size: str, amount: int, price: float):
-    """Adds new shirt to database
-
-    :param name: Name of the shirt
-    :param color: Color of the shirt
-    :param size: Size of the shirt
-    :param amount: Amount of shirts
-    :param price: Price of the shirt
-    :return:
-    """
-    cursor = db.cursor()
-    cursor.execute("""INSERT INTO shirt (name, color, size, amount, price)
-                    VALUES (?, ?, ?, ?, ?)
-                    """, [name, color, size, amount, price]
-                   )
-    db.commit()
-    return
-
-
-def update_shirt(shirt_id: int, name: str, color: str, size: str, amount: int, price: float):
-    cursor = db.cursor()
-    cursor.execute("""UPDATE shirt
-                    SET name = ?, color = ?, size = ?,
-                    amount = ?, price = ?
-                    WHERE id = ?
-                    """, [name, color, size, amount, price, shirt_id]
-                   )
-    db.commit()
-    return
-
-
-def delete_shirt(shirt_id: int):
-    """Adds new shirt to database
-
-    :param shirt_id: Name of the shirt
-    :return:
-    """
-    cursor = db.cursor()
-    cursor.execute("""DELETE FROM shirt
-                    WHERE id = ?
-                    """, [shirt_id]
-                   )
-    db.commit()
-    return
 
 
 def get_shirts(name: str, order_by: str, order: str, limit: int, offset: int):
@@ -150,6 +102,7 @@ def get_shirts(name: str, order_by: str, order: str, limit: int, offset: int):
     else:
         order = "ASC"
 
+    # Add % at the end of parameter so search will be conducted for names starting with xyz
     name_begins = name + '%'
 
     cursor = db.cursor()
@@ -162,6 +115,73 @@ def get_shirts(name: str, order_by: str, order: str, limit: int, offset: int):
                     """, [name_begins, limit, offset]
                    )
     return result_as_json(cursor)
+
+
+def add_shirt(name: str, color: str, size: str, amount: int, price: float):
+    """Adds new shirt to database. Unique id is given automatically.
+
+    :param name: Name of the shirt
+    :param color: Color of the shirt
+    :param size: Size of the shirt
+    :param amount: Amount of shirts
+    :param price: Price of the shirt
+    :return: Nothing
+    """
+    cursor = db.cursor()
+    cursor.execute("""INSERT INTO shirt (name, color, size, amount, price)
+                    VALUES (?, ?, ?, ?, ?)
+                    """, [name, color, size, amount, price]
+                   )
+    db.commit()
+    return
+
+
+def update_shirt(shirt_id: int, name: str, color: str, size: str, amount: int, price: float):
+    """Updates shirt with new information
+
+    :param shirt_id: Id of the shirt (this can't be changed)
+    :param name: Name of the shirt
+    :param color: Color of the shirt
+    :param size: Size of the shirt
+    :param amount: Amount of shirts
+    :param price: Price of the shirt
+    :return: Nothing
+    """
+    cursor = db.cursor()
+    cursor.execute("""UPDATE shirt
+                    SET name = ?, color = ?, size = ?,
+                    amount = ?, price = ?
+                    WHERE id = ?
+                    """, [name, color, size, amount, price, shirt_id]
+                   )
+    db.commit()
+    return
+
+
+def delete_shirt(shirt_id: int):
+    """Adds new shirt to database
+
+    :param shirt_id: Name of the shirt
+    :return: Nothing
+    """
+    cursor = db.cursor()
+    cursor.execute("""DELETE FROM shirt
+                    WHERE id = ?
+                    """, [shirt_id]
+                   )
+    db.commit()
+
+
+def delete_all_shirts():
+    """Deletes all shirts from the database
+
+    :return: Nothing left to return
+    """
+    cursor = db.cursor()
+    cursor.execute("""DELETE FROM shirt
+                        """
+                   )
+    db.commit()
 
 
 def result_as_json(cursor):

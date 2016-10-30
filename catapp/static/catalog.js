@@ -1,5 +1,5 @@
 /**
- * Created by Lanttu on 28.10.2016.
+ * Created by Joonas Lattu on 28.10.2016.
  */
 
 var catApp = angular.module('catApp', ['ngRoute']);
@@ -9,9 +9,6 @@ catApp.config(['$routeProvider',
          $routeProvider.
              when('/', {
                  templateUrl: 'static/partials/shirts.html'
-             }).
-             otherwise({
-                 redirectTo: '/'
              });
     }]);
 
@@ -25,6 +22,7 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.nextDisabled = false;
     $scope.shirtSelected = {};
     $scope.searchShirt = "";
+    $scope.advancedOptions = false;
 
     $scope.shirtSizes = [
         {sizeID: 1, sizeName: 'XS'},
@@ -35,7 +33,11 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
         {sizeID: 6, sizeName: 'XXL'},
         {sizeID: 7, sizeName: 'XXXL'}
     ];
-    $scope.defaultSelectedSize = $scope.shirtSizes[2].size;
+
+
+
+    // ------------------------------------------------------
+    // Functions handling data querying
 
     $scope.loadData = function () {
         $http.get('/get_shirts', {params: {name: $scope.searchShirt, sorting_key: $scope.sortingKey,
@@ -81,6 +83,11 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.loadData();
     };
 
+
+
+    // ------------------------------------------------------
+    // Functions altering shirt database somehow
+
     $scope.addNewShirt = function () {
         $http.post('/add_new_shirt', JSON.stringify($scope.newShirt)).then(function (response) {
             if (response.data) console.log(response);
@@ -97,24 +104,6 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
         });
     };
 
-    $scope.resetSortingOffset = function () {
-        $scope.sortingOffset = 0;
-        $scope.previousDisabled = true;
-        $scope.nextDisabled = false;
-    };
-
-
-
-    // gets the template to ng-include for a table row / item
-    $scope.getTemplate = function(shirt) {
-        if (shirt.id === $scope.shirtSelected.id) return 'editShirt';
-        else return 'displayShirt';
-    };
-
-    $scope.editShirt = function(shirt) {
-        $scope.shirtSelected = angular.copy(shirt);
-    };
-
     $scope.updateShirt = function(idx) {
         console.log("Saving contact");
         console.log($scope.shirtSelected);
@@ -125,12 +114,62 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.resetEdit();
     };
 
+    $scope.addTestData = function () {
+        $http.get('/add_test_data', null).then(function (response) {
+            if (response.data) console.log(response);
+            $scope.loadData();
+        });
+    };
+
+    $scope.deleteAllData = function () {
+        $http.post('/delete_all_shirts', null).then(function (response) {
+            if (response.data) console.log(response);
+            $scope.loadData();
+        });
+    };
+
+
+
+    // ------------------------------------------------------
+    // Functions used when editing rows in table
+
+    // Gets the template to ng-include for a table row / item
+    $scope.getTemplate = function(shirt) {
+        if (shirt.id === $scope.shirtSelected.id) return 'editShirt';
+        else return 'displayShirt';
+    };
+
+    $scope.editShirt = function(shirt) {
+        $scope.shirtSelected = angular.copy(shirt);
+    };
+
     $scope.resetEdit = function() {
         $scope.shirtSelected = {};
     };
 
+
+
+    // ------------------------------------------------------
+    // Functions used only by this class itself
+
+    $scope.resetSortingOffset = function () {
+        $scope.sortingOffset = 0;
+        $scope.previousDisabled = true;
+        $scope.nextDisabled = false;
+    };
+
     // Initial site load
     $scope.loadData();
+
+
+
+    // ------------------------------------------------------
+    // Functions used only by this class itself
+    $scope.revealAdvancedOptions = function () {
+        console.log($scope.advancedOptions);
+        $scope.advancedOptions = true;
+        console.log($scope.advancedOptions);
+    };
 
 }]);
 

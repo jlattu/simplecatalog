@@ -8,45 +8,49 @@
 </head>
 <body ng-app="catApp">
     <div ng-controller="catalogCtrl">
-        <select ng-model="sortingLimitSelected"
-                ng-change="changeSortingLimit(sortingLimitSelected)">
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="250">250</option>
-        </select>
-        <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled"><</button>
-        <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">></button>
-        <button ng-click=loadData()>Refresh</button>
-        <input type="text" ng-model="searchShirt" >
-        <button ng-click=loadData()>Search name</button>
 
         <form name="newShirtForm" ng-submit="addNewShirt()">
             <label>Add new shirt</label>
             <div>
-                Name <input type="text" name="shirtName" ng-model="newShirt.name" required>
+                <label class="newShirtCommon">Name</label>
+                <input class="shirtName" type="text" name="shirtName" ng-model="newShirt.name" required>
             </div>
             <div>
-                Color <input type="text" name="shirtColor" ng-model="newShirt.color" required>
+                Color <input class="shirtColor" type="text" name="shirtColor" ng-model="newShirt.color" required>
             </div>
             <div>
                 Size
                 <select name="shirtSize" ng-model="newShirt.size">
-                    <option value="">Choose size</option>
+                    <option value="">Default (M)</option>
                     <option ng-repeat="size in shirtSizes"
                             value="{{size.sizeName}}">{{size.sizeName}}</option>
                 </select>
-                <span class="error" ng-show="validationFailed">Required!</span>
             </div>
             <div>
-                Amount <input type="number" name="shirtAmount" ng-model="newShirt.amount" min="0" required>
+                Amount <input class="shirtAmount" type="number" name="shirtAmount" ng-model="newShirt.amount" min="0" required>
             </div>
             <div>
-                Price <input type="number" name="shirtAmount"
+                Price <input class="shirtPrice" type="number" name="shirtAmount"
                              ng-model="newShirt.price" step="0.01" min="0" required>
             </div>
             <input type="submit">
         </form>
+
+        <div>
+            <select ng-model="sortingLimitSelected"
+                    ng-change="changeSortingLimit(sortingLimitSelected)">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="250">250</option>
+            </select>
+            <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled"><</button>
+            <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">></button>
+            <button ng-click=loadData()>Refresh</button>
+            <input type="text" ng-model="searchShirt" >
+            <button ng-click=loadData()>Search name</button>
+        </div>
+
 
         <table>
             <tr>
@@ -61,12 +65,38 @@
 
             </tr>
         </table>
+
+
+        <div>
+            <select ng-model="sortingLimitSelected"
+                    ng-change="changeSortingLimit(sortingLimitSelected)">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="250">250</option>
+            </select>
+            <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled"><</button>
+            <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">></button>
+            <button ng-click=loadData()>Refresh</button>
+            <input type="text" ng-model="searchShirt" >
+            <button ng-click=loadData()>Search name</button>
+        </div>
+
+        <div>Advanced operations</div>
+        <div>
+            <button ng-hide="advancedOptions" ng-click=revealAdvancedOptions()>Click here to reveal</button>
+            <button ng-hide="!advancedOptions" ng-click=addTestData()>Add test data</button>
+            <button ng-hide="!advancedOptions" ng-click=deleteAllData()>Delete everything, nuke it down!</button>
+        </div>
+
     </div>
+
+
 
     <script type="text/ng-template" id="displayShirt">
         <td id="p1">{{ shirt.id }}</td>
         <td>{{ shirt.name }}</td>
-        <td id="colorbox">{{ shirt.color }}</td>
+        <td>{{ shirt.color }}</td>
         <td>{{ shirt.size }}</td>
         <td>{{ shirt.amount }}</td>
         <td>{{ shirt.price }}</td>
@@ -78,19 +108,22 @@
     <script type="text/ng-template" id="editShirt">
         <td>{{shirt.id}}</td>
         <td>
-            <input type="text" ng-model="shirtSelected.name" />
+            <input class="shirtName" type="text" ng-model="shirtSelected.name" />
         </td>
         <td>
-            <input type="text" ng-model="shirtSelected.color" />
+            <input class="shirtColor" type="text" ng-model="shirtSelected.color" />
         </td>
         <td>
-            <input type="text" ng-model="shirtSelected.size" />
+            <select name="shirtSize" ng-model="shirtSelected.size">
+                    <option ng-repeat="size in shirtSizes"
+                            value="{{size.sizeName}}">{{size.sizeName}}</option>
+                </select>
         </td>
         <td>
-            <input type="number" ng-model="shirtSelected.amount" />
+            <input class="shirtAmount" type="number" ng-model="shirtSelected.amount" min="0" />
         </td>
         <td>
-            <input type="number" ng-model="shirtSelected.price" step="0.01" min="0"/>
+            <input class="shirtPrice" type="number" ng-model="shirtSelected.price" step="0.01" min="0"/>
         </td>
         <td>
             <button ng-click="updateShirt($index)">Save</button>

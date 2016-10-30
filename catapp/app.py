@@ -1,5 +1,4 @@
 from flask import *
-import json
 import catapp.catalog as catalog
 from catapp.catalog import *
 
@@ -16,12 +15,16 @@ def hello():
 
 @app.route("/add_test_data")
 def test_data():
-    populate_test_data()
-    return "Test data added!"
+    added_shirts = populate_test_data()
+    return str(added_shirts) + " new shirts added as a test data!"
 
 
 @app.route("/get_shirts")
 def fetch_shirts():
+    """Gets shirts from database using parameters to narrow results down.
+
+    :return: Information about shirts gathered with parameter
+    """
     name = offset = request.args.get('name')
     sorting_key = request.args.get('sorting_key')
     sorting_order = request.args.get('sorting_order')
@@ -32,6 +35,10 @@ def fetch_shirts():
 
 @app.route("/add_new_shirt", methods=["POST"])
 def add_new_shirt():
+    """Adds new base to database.
+
+    :return: Confirmation of new shirt getting added to databe
+    """
     json_data = request.get_json()
     try:
         name = json_data['name']
@@ -46,11 +53,15 @@ def add_new_shirt():
         print("Size will be M")
         size = 'M'
     add_shirt(name, color, size, amount, price)
-    return "Shirt added"
+    return "Shirt added to database"
 
 
 @app.route("/update_shirt", methods=["POST"])
 def edit_shirt():
+    """Route for updating shirt with new information by using its id as identifier
+
+    :return: Confirmation of updating
+    """
     json_data = request.get_json()
     print(json_data)
     try:
@@ -67,25 +78,34 @@ def edit_shirt():
         print("Size will be M")
         size = 'M'
     update_shirt(shirt_id, name, color, size, amount, price)
-    return "Shirt updated"
+    return "Shirt information updated"
 
 
 @app.route("/delete_shirt", methods=["POST"])
 def shirt_deletion():
+    """Route for deleting a shirt by using its id as identifier
+
+    :return: Confirmation of deletion
+    """
     json_data = request.get_json()
-    print(json_data)
-    tel = {'jack': 4098, 'sape': 4139}
-    print(tel)
-    print(type(json_data))
-    print(json_data['id'])
     try:
         shirt_id = int(json_data['id'])
     except KeyError as e:
         print("Missing data: " + e.args[0])
         return abort(400, "Missing id")
     delete_shirt(shirt_id)
-    return "Shirt deleted!"
+    return "Shirt deleted from database"
+
+
+@app.route("/delete_all_shirts", methods=["POST"])
+def nuke_it_down():
+    """Route for deleting a shirt by using its id as identifier
+
+    :return: Confirmation of deletion
+    """
+    delete_all_shirts()
+    return "I love the smell of napalm in the morning"
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run()
