@@ -12,6 +12,7 @@ form.newShirt {
 
 input[type=text].newShirtTextBox {
     width: 180px;
+    border-radius: 6px;
 }
 
 input[type=number].newShirtNumberBox {
@@ -85,8 +86,14 @@ td.price {
     text-align: center;
 }
 
+input.rounding {
+    border-radius: 6px;
+}
 
+button.rounding {
+    border-radius: 6px;
+}
 
-button.arrows {
-    font-weight: bold;
+select.rounding {
+    border-radius: 6px;
 }

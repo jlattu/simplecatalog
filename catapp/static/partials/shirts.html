@@ -13,51 +13,51 @@
             <h2>Add new shirt</h2>
             <div>
                 <label class="newShirtCommon">Name</label>
-                <input class="newShirtTextBox" type="text" name="shirtName" ng-model="newShirt.name" required>
+                <input class="newShirtTextBox rounding" type="text" name="shirtName" ng-model="newShirt.name" required>
             </div>
             <div>
                 <label class="newShirtCommon">Color</label>
-                <input class="newShirtTextBox" type="text" name="shirtColor" ng-model="newShirt.color" required>
+                <input class="newShirtTextBox rounding" type="text" name="shirtColor" ng-model="newShirt.color" required>
             </div>
             <div>
                 <label class="newShirtCommon">Size</label>
-                <select name="shirtSize" ng-model="newShirt.size">
+                <select class="rounding" name="shirtSize" ng-model="newShirt.size">
                     <option value="">Default (M)</option>
                     <option ng-repeat="size in shirtSizes" value="{{size.sizeName}}">{{size.sizeName}}</option>
                 </select>
             </div>
             <div>
                 <label class="newShirtCommon">Amount</label>
-                <input class="newShirtNumberBox" type="number" name="shirtAmount" ng-model="newShirt.amount" min="0" required>
+                <input class="newShirtNumberBox rounding" type="number" name="shirtAmount" ng-model="newShirt.amount" min="0" required>
             </div>
             <div>
                 <label class="newShirtCommon">Price</label>
-                <input class="newShirtNumberBox" type="number" name="shirtAmount"
+                <input class="newShirtNumberBox rounding" type="number" name="shirtAmount"
                              ng-model="newShirt.price" step="0.01" min="0" required>
             </div>
-            <input type="submit">
+            <button class="rounding">Submit</button>
         </form>
 
 
         <div>
-            <input type="text" ng-model="searchShirt" >
-            <button ng-click=loadData()>Search name</button>
+            <input class="rounding" type="text" ng-model="searchShirt" >
+            <button class="rounding" ng-click=loadData()>Search name</button>
         </div>
         <div>
-            <select ng-model="sortingLimitSelected"
+            <select class="rounding" ng-model="sortingLimitSelected"
                     ng-change="changeSortingLimit(sortingLimitSelected)">
                 <option value="25">25</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
                 <option value="250">250</option>
             </select>
-            <button class="arrows" ng-click=changeSortingOffset("-") ng-disabled="previousDisabled">◄</button>
-            <button class="arrows" ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">►</button>
-            <button ng-click=loadData()>Refresh</button>
+            <button class="rounding" ng-click=changeSortingOffset("-") ng-disabled="previousDisabled">◄</button>
+            <button class="rounding" ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">►</button>
+            <button class="rounding" ng-click=loadData()>Refresh</button>
         </div>
 
 
-        <table>
+        <table >
             <tr>
                 <th ng-click=changeSortingKey("id")> ID</th>
                 <th class="name" ng-click=changeSortingKey("name")>Name</th>
@@ -69,31 +69,39 @@
             <tr ng-repeat="shirt in shirts" ng-include="getTemplate(shirt)">
 
             </tr>
+            <tr>
+                <th ng-click=changeSortingKey("id")> ID</th>
+                <th class="name" ng-click=changeSortingKey("name")>Name</th>
+                <th class="color" ng-click=changeSortingKey("color")> Color </th>
+                <th class="size" ng-click=changeSortingKey("size")> Size </th>
+                <th class="amount" ng-click=changeSortingKey("amount")> Amount </th>
+                <th class="price" ng-click=changeSortingKey("price")> Price € </th>
+            </tr>
         </table>
 
 
         <div>
-            <select ng-model="sortingLimitSelected"
+            <select class="rounding"  ng-model="sortingLimitSelected"
                     ng-change="changeSortingLimit(sortingLimitSelected)">
                 <option value="25">25</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
                 <option value="250">250</option>
             </select>
-            <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled">◄</button>
-            <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">►</button>
-            <button ng-click=loadData()>Refresh</button>
+            <button class="rounding" ng-click=changeSortingOffset("-") ng-disabled="previousDisabled">◄</button>
+            <button class="rounding" ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">►</button>
+            <button class="rounding" ng-click=loadData()>Refresh</button>
         </div>
         <div>
-            <input type="text" ng-model="searchShirt" >
-            <button ng-click=loadData()>Search name</button>
+            <input class="rounding"  type="text" ng-model="searchShirt" >
+            <button class="rounding" ng-click=loadData()>Search name</button>
         </div>
 
         <h2>Advanced options</h2>
         <div>
-            <button ng-hide="advancedOptions" ng-click=revealAdvancedOptions()>Click here to reveal</button>
-            <button ng-hide="!advancedOptions" ng-click=addTestData()>Add test data</button>
-            <button ng-hide="!advancedOptions" ng-click=deleteAllData()>Delete everything, nuke it down!</button>
+            <button class="rounding" ng-hide="advancedOptions" ng-click=revealAdvancedOptions()>Click here to reveal</button>
+            <button class="rounding" ng-hide="!advancedOptions" ng-click=addTestData()>Add test data</button>
+            <button class="rounding" ng-hide="!advancedOptions" ng-click=deleteAllData()>Delete everything, nuke it down!</button>
         </div>
 
     </div>
@@ -108,33 +116,33 @@
         <td class="amount">{{ shirt.amount }}</td>
         <td class="price">{{ shirt.price }}</td>
         <td>
-            <button ng-click="editShirt(shirt)">Edit</button>
-            <button ng-click="deleteShirt(shirt.id)">Delete</button>
+            <button class="rounding" ng-click="editShirt(shirt)">Edit</button>
+            <button class="rounding" ng-click="deleteShirt(shirt.id)">Delete</button>
         </td>
     </script>
     <script type="text/ng-template" id="editShirt">
         <td class="id">{{shirt.id}}</td>
         <td>
-            <input class="shirtName" type="text" ng-model="shirtSelected.name" />
+            <input class="shirtName rounding" type="text" ng-model="shirtSelected.name" />
         </td>
         <td>
-            <input class="shirtColor" type="text" ng-model="shirtSelected.color" />
+            <input class="shirtColor rounding" type="text" ng-model="shirtSelected.color" />
         </td>
         <td>
-            <select name="shirtSize" ng-model="shirtSelected.size">
+            <select class="rounding" name="shirtSize" ng-model="shirtSelected.size">
                     <option ng-repeat="size in shirtSizes"
                             value="{{size.sizeName}}">{{size.sizeName}}</option>
                 </select>
         </td>
         <td>
-            <input class="shirtAmount" type="number" ng-model="shirtSelected.amount" min="0" />
+            <input class="shirtAmount rounding" type="number" ng-model="shirtSelected.amount" min="0" />
         </td>
         <td>
-            <input class="shirtPrice" type="number" ng-model="shirtSelected.price" step="0.01" min="0"/>
+            <input class="shirtPrice rounding" type="number" ng-model="shirtSelected.price" step="0.01" min="0"/>
         </td>
         <td>
-            <button ng-click="updateShirt($index)">Save</button>
-            <button ng-click="resetEdit()">Cancel</button>
+            <button class="rounding" ng-click="updateShirt($index)">Save</button>
+            <button class="rounding" ng-click="resetEdit()">Cancel</button>
         </td>
     </script>
 
