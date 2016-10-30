@@ -1,0 +1,92 @@
+body {
+    background-color: lightblue;
+}
+
+h1 {
+    margin-left: 15px;
+}
+
+form.newShirt {
+    padding-bottom: 15px;
+}
+
+input[type=text].newShirtTextBox {
+    width: 180px;
+}
+
+input[type=number].newShirtNumberBox {
+    width: 60px;
+}
+
+label.newShirtCommon {
+    display : inline-block;
+    min-width: 60px;
+    font-weight: bold;
+}
+
+input[type=text].shirtName{
+    width: 245px;
+}
+
+input[type=text].shirtColor{
+    width: 85px;
+}
+
+input[type=number].shirtAmount {
+    width: 40px;
+}
+
+input[type=number].shirtPrice {
+    width: 65px;
+    text-align: center;
+}
+
+td.id {
+    width: 35px;
+    text-align: center;
+}
+
+th.name {
+    width: 250px;
+    max-width: 250px;
+}
+
+th.color {
+    width: 90px;
+    max-width: 90px;
+}
+
+th.size {
+    width: 60px;
+}
+
+td.size {
+    width: 60px;
+    text-align: center;
+}
+
+th.amount {
+    width: 50px;
+    text-align: center;
+}
+
+td.amount {
+    width: 50px;
+    text-align: center;
+}
+
+th.price {
+    width: 70px;
+    text-align: center;
+}
+
+td.price {
+    width: 70px;
+    text-align: center;
+}
+
+
+
+button.arrows {
+    font-weight: bold;
+}

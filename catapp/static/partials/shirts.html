@@ -9,33 +9,40 @@
 <body ng-app="catApp">
     <div ng-controller="catalogCtrl">
 
-        <form name="newShirtForm" ng-submit="addNewShirt()">
-            <label>Add new shirt</label>
+        <form class="newShirt" name="newShirtForm" ng-submit="addNewShirt()">
+            <h2>Add new shirt</h2>
             <div>
                 <label class="newShirtCommon">Name</label>
-                <input class="shirtName" type="text" name="shirtName" ng-model="newShirt.name" required>
+                <input class="newShirtTextBox" type="text" name="shirtName" ng-model="newShirt.name" required>
             </div>
             <div>
-                Color <input class="shirtColor" type="text" name="shirtColor" ng-model="newShirt.color" required>
+                <label class="newShirtCommon">Color</label>
+                <input class="newShirtTextBox" type="text" name="shirtColor" ng-model="newShirt.color" required>
             </div>
             <div>
-                Size
+                <label class="newShirtCommon">Size</label>
                 <select name="shirtSize" ng-model="newShirt.size">
                     <option value="">Default (M)</option>
-                    <option ng-repeat="size in shirtSizes"
-                            value="{{size.sizeName}}">{{size.sizeName}}</option>
+                    <option ng-repeat="size in shirtSizes" value="{{size.sizeName}}">{{size.sizeName}}</option>
                 </select>
             </div>
             <div>
-                Amount <input class="shirtAmount" type="number" name="shirtAmount" ng-model="newShirt.amount" min="0" required>
+                <label class="newShirtCommon">Amount</label>
+                <input class="newShirtNumberBox" type="number" name="shirtAmount" ng-model="newShirt.amount" min="0" required>
             </div>
             <div>
-                Price <input class="shirtPrice" type="number" name="shirtAmount"
+                <label class="newShirtCommon">Price</label>
+                <input class="newShirtNumberBox" type="number" name="shirtAmount"
                              ng-model="newShirt.price" step="0.01" min="0" required>
             </div>
             <input type="submit">
         </form>
 
+
+        <div>
+            <input type="text" ng-model="searchShirt" >
+            <button ng-click=loadData()>Search name</button>
+        </div>
         <div>
             <select ng-model="sortingLimitSelected"
                     ng-change="changeSortingLimit(sortingLimitSelected)">
@@ -44,22 +51,20 @@
                 <option value="100">100</option>
                 <option value="250">250</option>
             </select>
-            <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled"><</button>
-            <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">></button>
+            <button class="arrows" ng-click=changeSortingOffset("-") ng-disabled="previousDisabled">◄</button>
+            <button class="arrows" ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">►</button>
             <button ng-click=loadData()>Refresh</button>
-            <input type="text" ng-model="searchShirt" >
-            <button ng-click=loadData()>Search name</button>
         </div>
 
 
         <table>
             <tr>
                 <th ng-click=changeSortingKey("id")> ID</th>
-                <th ng-click=changeSortingKey("name")>Name</th>
-                <th ng-click=changeSortingKey("color")> Color </th>
-                <th ng-click=changeSortingKey("size")> Size </th>
-                <th ng-click=changeSortingKey("amount")> Amount </th>
-                <th ng-click=changeSortingKey("price")> Price € </th>
+                <th class="name" ng-click=changeSortingKey("name")>Name</th>
+                <th class="color" ng-click=changeSortingKey("color")> Color </th>
+                <th class="size" ng-click=changeSortingKey("size")> Size </th>
+                <th class="amount" ng-click=changeSortingKey("amount")> Amount </th>
+                <th class="price" ng-click=changeSortingKey("price")> Price € </th>
             </tr>
             <tr ng-repeat="shirt in shirts" ng-include="getTemplate(shirt)">
 
@@ -75,14 +80,16 @@
                 <option value="100">100</option>
                 <option value="250">250</option>
             </select>
-            <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled"><</button>
-            <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">></button>
+            <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled">◄</button>
+            <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">►</button>
             <button ng-click=loadData()>Refresh</button>
+        </div>
+        <div>
             <input type="text" ng-model="searchShirt" >
             <button ng-click=loadData()>Search name</button>
         </div>
 
-        <div>Advanced operations</div>
+        <h2>Advanced options</h2>
         <div>
             <button ng-hide="advancedOptions" ng-click=revealAdvancedOptions()>Click here to reveal</button>
             <button ng-hide="!advancedOptions" ng-click=addTestData()>Add test data</button>
@@ -94,19 +101,19 @@
 
 
     <script type="text/ng-template" id="displayShirt">
-        <td id="p1">{{ shirt.id }}</td>
+        <td class="id">{{ shirt.id }}</td>
         <td>{{ shirt.name }}</td>
         <td>{{ shirt.color }}</td>
-        <td>{{ shirt.size }}</td>
-        <td>{{ shirt.amount }}</td>
-        <td>{{ shirt.price }}</td>
+        <td class="size">{{ shirt.size }}</td>
+        <td class="amount">{{ shirt.amount }}</td>
+        <td class="price">{{ shirt.price }}</td>
         <td>
             <button ng-click="editShirt(shirt)">Edit</button>
             <button ng-click="deleteShirt(shirt.id)">Delete</button>
         </td>
     </script>
     <script type="text/ng-template" id="editShirt">
-        <td>{{shirt.id}}</td>
+        <td class="id">{{shirt.id}}</td>
         <td>
             <input class="shirtName" type="text" ng-model="shirtSelected.name" />
         </td>
