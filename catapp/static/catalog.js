@@ -24,6 +24,7 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.previousDisabled = true;
     $scope.nextDisabled = false;
     $scope.shirtSelected = {};
+    $scope.searchShirt = "";
 
     $scope.shirtSizes = [
         {sizeID: 1, sizeName: 'XS'},
@@ -37,7 +38,7 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.defaultSelectedSize = $scope.shirtSizes[2].size;
 
     $scope.loadData = function () {
-        $http.get('/get_shirts', {params: {sorting_key: $scope.sortingKey,
+        $http.get('/get_shirts', {params: {name: $scope.searchShirt, sorting_key: $scope.sortingKey,
         sorting_order: $scope.sortingOrder, sorting_limit: $scope.sortingLimit,
         sorting_offset: $scope.sortingOffset}}).success(function(data){
             $scope.shirts = data;
@@ -89,14 +90,12 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.deleteShirt = function (shirt_id) {
         var deletingData = {"id": + shirt_id};
+        console.log(deletingData);
         $http.post('/delete_shirt', deletingData).then(function (response) {
             if (response.data) console.log(response);
             $scope.loadData();
         });
     };
-
-    // Initial site load
-    $scope.loadData();
 
     $scope.resetSortingOffset = function () {
         $scope.sortingOffset = 0;
@@ -126,9 +125,12 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.resetEdit();
     };
 
-        $scope.resetEdit = function() {
-            $scope.shirtSelected = {};
-        };
+    $scope.resetEdit = function() {
+        $scope.shirtSelected = {};
+    };
 
+    // Initial site load
+    $scope.loadData();
 
 }]);
+

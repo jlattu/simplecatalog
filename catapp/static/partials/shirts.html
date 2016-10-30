@@ -18,6 +18,8 @@
         <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled"><</button>
         <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">></button>
         <button ng-click=loadData()>Refresh</button>
+        <input type="text" ng-model="searchShirt" >
+        <button ng-click=loadData()>Search name</button>
 
         <form name="newShirtForm" ng-submit="addNewShirt()">
             <label>Add new shirt</label>

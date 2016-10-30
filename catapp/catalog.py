@@ -105,10 +105,15 @@ def delete_shirt(shirt_id: int):
     return
 
 
-def get_shirts(order_by: str, order: str, limit: int, offset: int):
-    """Fetches all shirts from database
+def get_shirts(name: str, order_by: str, order: str, limit: int, offset: int):
+    """"Fetches all shirts from database
 
-    :return: All shirts with all information except id
+    :param name: Searches for results beginning with this (everything if NULL)
+    :param order_by: Ordering key (e.g. name or price)
+    :param order: Ascending or descending
+    :param limit: How many results we will get with one query
+    :param offset: Starting from n:th result
+    :return: All shirts with all information
     """
     # Since table name can't be given as a parameter, we will have to include it as a string
     # Thus we use a bit tacky way to make absolutely sure there can't be sql injections
@@ -137,7 +142,7 @@ def get_shirts(order_by: str, order: str, limit: int, offset: int):
     else:
         order_by = "name"
 
-    # Same treatment for order
+    # Same treatment for order (asc or desc)
     if order == "asc":
         order = "ASC"
     elif order == "desc":
@@ -145,13 +150,16 @@ def get_shirts(order_by: str, order: str, limit: int, offset: int):
     else:
         order = "ASC"
 
+    name_begins = name + '%'
+
     cursor = db.cursor()
     cursor.execute("""SELECT *
                     FROM shirt
+                    WHERE name LIKE ?
                     ORDER BY """ + order_by + " " + order + """
                     LIMIT ?
                     OFFSET ?
-                    """, [limit, offset]
+                    """, [name_begins, limit, offset]
                    )
     return result_as_json(cursor)
 

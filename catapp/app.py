@@ -22,11 +22,12 @@ def test_data():
 
 @app.route("/get_shirts")
 def fetch_shirts():
+    name = offset = request.args.get('name')
     sorting_key = request.args.get('sorting_key')
     sorting_order = request.args.get('sorting_order')
     limit = request.args.get('sorting_limit')
     offset = request.args.get('sorting_offset')
-    return jsonify(get_shirts(sorting_key, sorting_order, limit, offset)), 200
+    return jsonify(get_shirts(name, sorting_key, sorting_order, limit, offset)), 200
 
 
 @app.route("/add_new_shirt", methods=["POST"])
