@@ -22,7 +22,11 @@ def test_data():
 
 @app.route("/get_shirts")
 def fetch_shirts():
-    return jsonify(get_shirts()), 200
+    sorting_key = request.args.get('sorting_key')
+    sorting_order = request.args.get('sorting_order')
+    limit = 250
+    offset = 0
+    return jsonify(get_shirts(sorting_key, sorting_order, limit, offset)), 200
 
 
 if __name__ == "__main__":

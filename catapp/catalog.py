@@ -22,9 +22,9 @@ def open_database_connection(self):
     cursor = db.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS shirt (
                         id INTEGER PRIMARY KEY,
-                        shirt_name TEXT,
+                        name TEXT,
                         color VARCHAR(30),
-                        shirt_size VARCHAR(10),
+                        size VARCHAR(10),
                         amount available INTEGER,
                         price REAL
                         )
@@ -59,14 +59,52 @@ def populate_test_data():
     return len(sql_commands) - 1 - not_added
 
 
-def get_shirts():
+def get_shirts(order_by: str, order: str, limit: int, offset: int):
     """Fetches all shirts from database
 
     :return: All shirts with all information except id
     """
-    db.row_factory = sqlite3.Row
+    # Since table name can't be given as a parameter, we will have to include it as a string
+    # Thus we use a bit tacky way to make absolutely sure there can't be sql injections
+    # We could also make unique execute cases for all alternatives but this way we can more easily modify query itself
+    if order_by == "name":
+        order_by = "name"
+    elif order_by == "color":
+        order_by = "color"
+    elif order_by == "size":
+        order_by = """CASE size
+                    WHEN 'XS' THEN 0
+                    WHEN 'S' THEN 1
+                    WHEN 'M' THEN 2
+                    WHEN 'L' THEN 3
+                    WHEN 'XL' THEN 4
+                    WHEN 'XXL' THEN 5
+                    WHEN 'XXXL' THEN 6
+                    END
+                    """
+    elif order_by == "amount":
+        order_by = "amount"
+    elif order_by == "price":
+        order_by = "CAST(price AS REAL)"
+    else:
+        order_by = "name"
+
+    # Same treatment for order
+    if order == "asc":
+        order = "ASC"
+    elif order == "desc":
+        order = "DESC"
+    else:
+        order = "ASC"
+
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM shirt")
+    cursor.execute("""SELECT *
+                    FROM shirt
+                    ORDER BY """ + order_by + " " + order + """
+                    LIMIT ?
+                    OFFSET ?
+                    """, [limit, offset]
+                   )
     return result_as_json(cursor)
 
 

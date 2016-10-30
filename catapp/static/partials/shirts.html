@@ -9,16 +9,16 @@
     <div ng-controller="catalogCtrl">
         <table border = 1>
             <tr>
-                <th> Shirt name </th>
-                <th> Color </th>
-                <th> Size </th>
-                <th> Amount </th>
-                <th> Price € </th>
+                <th headers="name" ng-click=changeSortingKey("name")> Shirt name </th>
+                <th ng-click=changeSortingKey("color")> Color </th>
+                <th ng-click=changeSortingKey("size")> Size </th>
+                <th ng-click=changeSortingKey("amount")> Amount </th>
+                <th ng-click=changeSortingKey("price")> Price € </th>
             </tr>
             <tr ng-repeat="x in shirts">
-                <td>{{ x.shirt_name }}</td>
+                <td>{{ x.name }}</td>
                 <td>{{ x.color }}</td>
-                <td>{{ x.shirt_size }}</td>
+                <td>{{ x.size }}</td>
                 <td>{{ x.amount }}</td>
                 <td>{{ x.price }}</td>
             </tr>
