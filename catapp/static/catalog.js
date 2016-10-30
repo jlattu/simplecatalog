@@ -8,7 +8,7 @@ catApp.config(['$routeProvider',
      function($routeProvider) {
          $routeProvider.
              when('/', {
-                 templateUrl: 'static/partials/shirts.html',
+                 templateUrl: 'static/partials/shirts.html'
              }).
              otherwise({
                  redirectTo: '/'
@@ -19,12 +19,13 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.sortingKey = "color";
     $scope.sortingOrder = "asc";
+    $scope.sortingLimit = 25;
 
     $scope.loadData = function () {
         $http.get('/get_shirts', {params: {sorting_key: $scope.sortingKey,
-        sorting_order: $scope.sortingOrder}}).success(function(data){
+        sorting_order: $scope.sortingOrder, sorting_limit: $scope.sortingLimit}}).success(function(data){
             $scope.shirts = data;
-            console.log($scope.shirts);
+           // console.log($scope.shirts);
         });
     };
 
@@ -40,8 +41,12 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.loadData();
     };
 
+    $scope.changeSortingLimit = function (sortingLimit) {
+        $scope.sortingLimit = sortingLimit;
+        $scope.loadData();
+    };
+
     // Initial site load
     $scope.loadData();
-
 
 }]);
