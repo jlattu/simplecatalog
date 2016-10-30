@@ -22,6 +22,7 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.nextDisabled = false;
     $scope.shirtSelected = {};
     $scope.searchShirt = "";
+    $scope.searchShirtPrevious = "";
     $scope.advancedOptions = false;
 
     $scope.shirtSizes = [
@@ -40,6 +41,8 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     // Functions handling data querying
 
     $scope.loadData = function () {
+        if ($scope.searchShirt != $scope.searchShirtPrevious) $scope.resetSortingOffset();
+        $scope.searchShirtPrevious = $scope.searchShirt;
         $http.get('/get_shirts', {params: {name: $scope.searchShirt, sorting_key: $scope.sortingKey,
         sorting_order: $scope.sortingOrder, sorting_limit: $scope.sortingLimit,
         sorting_offset: $scope.sortingOffset}}).success(function(data){
