@@ -59,6 +59,25 @@ def populate_test_data():
     return len(sql_commands) - 1 - not_added
 
 
+def add_shirt(name: str, color: str, size: str, amount: int, price: float):
+    """Adds new shirt to database
+
+    :param name: Name of the shirt
+    :param color: Color of the shirt
+    :param size: Size of the shirt
+    :param amount: Amount of shirts
+    :param price: Price of the shirt
+    :return:
+    """
+    cursor = db.cursor()
+    cursor.execute("""INSERT INTO shirt (name, color, size, amount, price)
+                    VALUES (?, ?, ?, ?, ?)
+                    """, [name, color, size, amount, price]
+                   )
+    db.commit()
+    return
+
+
 def get_shirts(order_by: str, order: str, limit: int, offset: int):
     """Fetches all shirts from database
 

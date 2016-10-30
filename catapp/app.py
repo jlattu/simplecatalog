@@ -25,7 +25,28 @@ def fetch_shirts():
     sorting_key = request.args.get('sorting_key')
     sorting_order = request.args.get('sorting_order')
     limit = request.args.get('sorting_limit')
+    offset = request.args.get('sorting_offset')
     return jsonify(get_shirts(sorting_key, sorting_order, limit, offset)), 200
+
+
+@app.route("/add_new_shirt", methods=["POST"])
+def add_new_shirt():
+    json_data = request.get_json()
+    print(json_data)
+    try:
+        name = json_data['name']
+        color = json_data['color']
+        amount = json_data['amount']
+        price = json_data['price']
+        size = json_data['size']
+    except KeyError as e:
+        print("Missing data: " + e.args[0])
+        if (str(e.args[0]) != "size"):
+            return abort(400, "Missing data other than size")
+        print("Size will be M")
+        size = 'M'
+    add_shirt(name, color, size, amount, price)
+    return "Shirt added"
 
 
 if __name__ == "__main__":

@@ -24,12 +24,23 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.previousDisabled = true;
     $scope.nextDisabled = false;
 
+    $scope.shirtSizes = [
+        {sizeID: 1, sizeName: 'XS'},
+        {sizeID: 2, sizeName: 'S'},
+        {sizeID: 3, sizeName: 'M'},
+        {sizeID: 4, sizeName: 'L'},
+        {sizeID: 5, sizeName: 'XL'},
+        {sizeID: 6, sizeName: 'XXL'},
+        {sizeID: 7, sizeName: 'XXXL'}
+    ];
+    $scope.defaultSelectedSize = $scope.shirtSizes[2].size;
+
     $scope.loadData = function () {
         $http.get('/get_shirts', {params: {sorting_key: $scope.sortingKey,
         sorting_order: $scope.sortingOrder, sorting_limit: $scope.sortingLimit,
         sorting_offset: $scope.sortingOffset}}).success(function(data){
             $scope.shirts = data;
-           // console.log($scope.shirts);
+            console.log($scope.shirts);
         });
     };
 
@@ -66,6 +77,14 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
             if ($scope.shirts.length < $scope.sortingLimit) $scope.nextDisabled = true;
         }
         $scope.loadData();
+    };
+
+    $scope.addNewShirt = function () {
+        $http.post('/add_new_shirt', JSON.stringify($scope.newShirt)).then(function (response) {
+            if (response.data) console.log(response);
+            $scope.loadData();
+        });
+
     };
 
     // Initial site load
