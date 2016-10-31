@@ -11,7 +11,7 @@
 
         <!--Form for adding a new shirt-->
         <form class="newShirt" name="newShirtForm" ng-submit="addNewShirt()">
-            <h2>Add new shirt</h2>
+            <div class="formHeader">Add new shirt</div>
             <div>
                 <label class="newShirtCommon">Name</label>
                 <input class="newShirtTextBox" type="text" name="shirtName" ng-model="newShirt.name" required>
@@ -100,6 +100,7 @@
                 <option value="999999999" ng-hide="hideAllLimit">All</option>
             </select>
             <button ng-click=changeSortingOffset("-") ng-disabled="previousDisabled">◄</button>
+            <label>{{currentPage}} / {{totalPages}}</label>
             <button ng-click=changeSortingOffset("+") ng-disabled="nextDisabled">►</button>
             <button ng-click=loadData()>Refresh</button>
         </div>
@@ -109,7 +110,7 @@
         </div>
 
         <!--Advanced options at the bottom of the page. Mostly to make testing easier.-->
-        <h2>Advanced options</h2>
+        <h1>Advanced options</h1>
         <div>
             <button ng-hide="advancedOptions" ng-click=revealAdvancedOptions()>Click here to reveal</button>
             <button ng-hide="!advancedOptions" ng-click=addTestData()>Add test data</button>

@@ -5,7 +5,9 @@ body {
 }
 
 h1 {
-    margin-left: 15px;
+    font-family: 'Helvetica', cursive;
+    font-size:25px;
+    font-weight:900;
 }
 
 form.newShirt {
@@ -39,15 +41,31 @@ select {
     border-radius: 6px;
 }
 
+form {
+
+    background:#f0f3f5;
+    border-radius: 6px;
+    margin: 10px 0;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+    max-width: 250px;
+    padding: 10px;
+}
+
+div.formHeader {
+    font-family: 'Helvetica', cursive;
+    font-size:16px;
+    font-weight:700;
+    margin-bottom: 10px;
+}
 
 /* ---------- Table ---------- */
 
 table {
-    border-collapse: separate;
+
     background:#fff;
     border-radius: 6px;
     margin: 10px 0;
-    box-shadow: 10px 10px 50px rgba(0,0,0,0.3);
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
     max-width: 760px;
 }
 
