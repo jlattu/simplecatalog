@@ -23,7 +23,7 @@ def test_data():
 def fetch_shirts():
     """Gets shirts from database using parameters to narrow results down.
 
-    :return: Information about shirts gathered with parameter
+    :return: Information about shirts gathered wanted parameters and total amount of shirts
     """
     name = request.args.get('name')
     sorting_key = request.args.get('sorting_key')

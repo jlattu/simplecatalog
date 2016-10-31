@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html ng-app>
 <head>
-
     <meta charset="UTF-8">
     <title>Shirts for everyone!</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
@@ -63,8 +62,8 @@
         <table>
             <thead>
                 <tr>
-                    <th class="c1" ng-click=changeSortingKey("id")> ID</th>
-                    <th class="name" ng-click=changeSortingKey("name")>Name</th>
+                    <th class="c1" ng-click=changeSortingKey("id")> ID </th>
+                    <th class="name" ng-click=changeSortingKey("name")> Name </th>
                     <th class="color" ng-click=changeSortingKey("color")> Color </th>
                     <th class="size" ng-click=changeSortingKey("size")> Size </th>
                     <th class="amount" ng-click=changeSortingKey("amount")> Amount </th>
@@ -120,7 +119,7 @@
 
     </div>
 
-
+    <!--HTML templates for showing normal and editable info for shirts in table-->
 
     <script type="text/ng-template" id="displayShirt">
         <td class="id">{{ shirt.id }}</td>
@@ -143,7 +142,7 @@
             <input class="shirtColor" type="text" ng-model="shirtSelected.color" />
         </td>
         <td>
-            <select class="rounding" name="shirtSize" ng-model="shirtSelected.size">
+            <select name="shirtSize" ng-model="shirtSelected.size">
                     <option ng-repeat="size in shirtSizes"
                             value="{{size.sizeName}}">{{size.sizeName}}</option>
                 </select>

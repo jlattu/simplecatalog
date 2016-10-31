@@ -119,6 +119,12 @@ def get_shirts(name: str, order_by: str, order: str, limit: int, offset: int):
 
 
 def get_shirt_count(name: str = ""):
+    """Gets amount of all shirts possible to get with used search parameter.
+
+    Main purpose is to help show right amount of pages for pagination.
+    :param name: Searches for results beginning with this (everything if NULL)
+    :return: Amount of rows
+    """
     name_begins = name + '%'
     cursor = db.cursor()
     cursor.execute("SELECT COUNT(id) FROM shirt WHERE name LIKE ?", [name_begins])

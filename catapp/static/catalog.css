@@ -1,4 +1,4 @@
-
+/* ---------- Common ---------- */
 
 body {
     background-color: lightblue;
@@ -8,6 +8,37 @@ h1 {
     font-family: 'Helvetica', cursive;
     font-size:25px;
     font-weight:900;
+}
+
+input {
+    border-radius: 6px;
+}
+
+button {
+    border-radius: 6px;
+}
+
+select {
+    border-radius: 6px;
+}
+
+/* ---------- Form (new shirt) ---------- */
+
+form {
+
+    background:#f0f3f5;
+    border-radius: 6px;
+    margin: 10px 0;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+    max-width: 250px;
+    padding: 10px;
+}
+
+div.formHeader {
+    font-family: 'Helvetica', cursive;
+    font-size:16px;
+    font-weight:700;
+    margin-bottom: 10px;
 }
 
 form.newShirt {
@@ -27,35 +58,6 @@ label.newShirtCommon {
     display : inline-block;
     min-width: 60px;
     font-weight: bold;
-}
-
-input {
-    border-radius: 6px;
-}
-
-button {
-    border-radius: 6px;
-}
-
-select {
-    border-radius: 6px;
-}
-
-form {
-
-    background:#f0f3f5;
-    border-radius: 6px;
-    margin: 10px 0;
-    box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
-    max-width: 250px;
-    padding: 10px;
-}
-
-div.formHeader {
-    font-family: 'Helvetica', cursive;
-    font-size:16px;
-    font-weight:700;
-    margin-bottom: 10px;
 }
 
 /* ---------- Table ---------- */
@@ -83,7 +85,6 @@ thead th {
     padding:10px;
     background-image: linear-gradient(#646f7f, #4a5564);
     border-top:1px solid #858d99;
-
 }
 
 th.c1 { border-top-left-radius: 6px;}
