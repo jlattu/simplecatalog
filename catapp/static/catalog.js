@@ -19,6 +19,8 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.totalShirts = 0;
     $scope.sortingLimit = 25;
     $scope.sortingOffset = 0;
+    $scope.currentPage = 1;
+    $scope.totalPages  = 1;
     $scope.previousDisabled = true;
     $scope.nextDisabled = false;
     $scope.shirtSelected = {};
@@ -51,7 +53,8 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
             $scope.shirts = data.shirts;
             $scope.totalShirts = data.total_count;
             $scope.countPages();
-            if ($scope.shirts.length < $scope.sortingLimit) $scope.nextDisabled = true;
+            if ($scope.shirts.length < $scope.sortingLimit
+            || $scope.currentPage === $scope.totalPages) $scope.nextDisabled = true;
             else $scope.nextDisabled = false;
         });
     };
