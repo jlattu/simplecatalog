@@ -53,7 +53,6 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
             $scope.countPages();
             if ($scope.shirts.length < $scope.sortingLimit) $scope.nextDisabled = true;
             else $scope.nextDisabled = false;
-            console.log($scope.shirts);
         });
     };
 
@@ -186,5 +185,8 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.totalPages = Math.ceil($scope.totalShirts / $scope.sortingLimit);
     };
 
+
+
 }]);
+
 
