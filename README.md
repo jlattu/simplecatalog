@@ -17,3 +17,5 @@ Made with:
 
 Currently lacking:
 * Tests
+
+Needs Python and Flask installed to be able to run
