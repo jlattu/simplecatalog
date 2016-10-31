@@ -25,12 +25,15 @@ def fetch_shirts():
 
     :return: Information about shirts gathered with parameter
     """
-    name = offset = request.args.get('name')
+    name = request.args.get('name')
     sorting_key = request.args.get('sorting_key')
     sorting_order = request.args.get('sorting_order')
     limit = request.args.get('sorting_limit')
     offset = request.args.get('sorting_offset')
-    return jsonify(get_shirts(name, sorting_key, sorting_order, limit, offset)), 200
+    result = get_shirts(name, sorting_key, sorting_order, limit, offset)
+    total_count = get_shirt_count(name)
+    shirts = {'total_count': total_count, 'shirts': result}
+    return jsonify(shirts), 200
 
 
 @app.route("/add_new_shirt", methods=["POST"])

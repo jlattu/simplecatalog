@@ -16,6 +16,7 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.sortingKey = "id";
     $scope.sortingOrder = "asc";
+    $scope.totalShirts = 0;
     $scope.sortingLimit = 25;
     $scope.sortingOffset = 0;
     $scope.previousDisabled = true;
@@ -24,6 +25,7 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.searchShirt = "";
     $scope.searchShirtPrevious = "";
     $scope.advancedOptions = false;
+    $scope.hideAllLimit = true;
 
     $scope.shirtSizes = [
         {sizeID: 1, sizeName: 'XS'},
@@ -41,12 +43,14 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     // Functions handling data querying
 
     $scope.loadData = function () {
-        if ($scope.searchShirt != $scope.searchShirtPrevious) $scope.resetSortingOffset();
+        if ($scope.searchShirt !== $scope.searchShirtPrevious) $scope.resetSortingOffset();
         $scope.searchShirtPrevious = $scope.searchShirt;
         $http.get('/get_shirts', {params: {name: $scope.searchShirt, sorting_key: $scope.sortingKey,
         sorting_order: $scope.sortingOrder, sorting_limit: $scope.sortingLimit,
         sorting_offset: $scope.sortingOffset}}).success(function(data){
-            $scope.shirts = data;
+            $scope.shirts = data.shirts;
+            $scope.totalShirts = data.total_count;
+            $scope.countPages();
             if ($scope.shirts.length < $scope.sortingLimit) $scope.nextDisabled = true;
             else $scope.nextDisabled = false;
             console.log($scope.shirts);
@@ -54,7 +58,7 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     };
 
     $scope.changeSortingKey = function (orderKey) {
-        if ($scope.sortingKey == orderKey) {
+        if ($scope.sortingKey === orderKey) {
             if ($scope.sortingOrder == "asc") $scope.sortingOrder = "desc";
             else $scope.sortingOrder = "asc";
         }
@@ -170,9 +174,16 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     // ------------------------------------------------------
     // Extra fluff
     $scope.revealAdvancedOptions = function () {
-        console.log($scope.advancedOptions);
         $scope.advancedOptions = true;
-        console.log($scope.advancedOptions);
+    };
+
+    $scope.allowSearchAll = function () {
+        $scope.hideAllLimit = false;
+    };
+
+    $scope.countPages = function () {
+        $scope.currentPage = Math.ceil($scope.sortingOffset / $scope.sortingLimit + 1);
+        $scope.totalPages = Math.ceil($scope.totalShirts / $scope.sortingLimit);
     };
 
 }]);

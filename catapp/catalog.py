@@ -70,6 +70,7 @@ def get_shirts(name: str, order_by: str, order: str, limit: int, offset: int):
     # Since table name can't be given as a parameter, we will have to include it as a string
     # Thus we use a bit tacky way to make absolutely sure there can't be sql injections
     # We could also make unique execute cases for all alternatives but this way we can more easily modify query itself
+    # (For most stating them again is probably useless)
     if order_by == "id":
         order_by == "id"
     elif order_by == "name":
@@ -115,6 +116,13 @@ def get_shirts(name: str, order_by: str, order: str, limit: int, offset: int):
                     """, [name_begins, limit, offset]
                    )
     return result_as_json(cursor)
+
+
+def get_shirt_count(name: str = ""):
+    name_begins = name + '%'
+    cursor = db.cursor()
+    cursor.execute("SELECT COUNT(id) FROM shirt WHERE name LIKE ?", [name_begins])
+    return cursor.fetchone()[0]
 
 
 def add_shirt(name: str, color: str, size: str, amount: int, price: float):
