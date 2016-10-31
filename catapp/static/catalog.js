@@ -14,7 +14,7 @@ catApp.config(['$routeProvider',
 
 catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
 
-    $scope.sortingKey = "id";
+    $scope.sortingKey = "name";
     $scope.sortingOrder = "asc";
     $scope.totalShirts = 0;
     $scope.sortingLimit = 25;
@@ -98,6 +98,10 @@ catApp.controller('catalogCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.addNewShirt = function () {
         $http.post('/add_new_shirt', JSON.stringify($scope.newShirt)).then(function (response) {
             if (response.data) console.log(response);
+            $scope.newShirt.name = "";
+            $scope.newShirt.color = "";
+            $scope.newShirt.amount = "";
+            $scope.newShirt.price = "";
             $scope.loadData();
         });
     };
