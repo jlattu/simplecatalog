@@ -5,17 +5,22 @@ db = None   # This variable is used for database connection later
 project_path = os.path.dirname(os.path.abspath(__file__))
 
 
-def open_database_connection(self):
+def open_database_connection(self, testing: bool = "false"):
     """Open database connection and attach it to db variable.
 
     Also creates table for shirts if it doesn't exists yet.
     :param self:
+    :param testing: When testing, create database to memory
     :return: Nothing
     """
-    database_name = 'catalog.db'
-    database_path = project_path + '/' + database_name
-    self.db = sqlite3.connect(database_path)
-    print("Connection to database opened")
+    if testing:
+        self.db = sqlite3.connect(':memory:')
+        result = "Connection to temporary database in memory opened"
+    else:
+        database_name = 'catalog.db'
+        database_path = project_path + '/' + database_name
+        self.db = sqlite3.connect(database_path)
+        result = "Connection to database opened"
 
     cursor = db.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS shirt (
@@ -28,6 +33,7 @@ def open_database_connection(self):
                         )
                         """)
     db.commit()
+    return result
 
 
 def populate_test_data():
@@ -57,10 +63,10 @@ def populate_test_data():
     return len(sql_commands) - 1 - not_added
 
 
-def get_shirts(name: str, order_by: str, order: str, limit: int, offset: int):
+def get_shirts(name: str = "", order_by: str = "id", order: str = "asc", limit: int = 25, offset: int = 0):
     """"Fetches all shirts from database
 
-    :param name: Searches for results beginning with this (everything if NULL)
+    :param name: Searches for results beginning with this (everything if empty)
     :param order_by: Ordering key (e.g. name or price)
     :param order: Ascending or descending
     :param limit: How many results we will get with one query
@@ -139,7 +145,7 @@ def add_shirt(name: str, color: str, size: str, amount: int, price: float):
     :param size: Size of the shirt
     :param amount: Amount of shirts
     :param price: Price of the shirt
-    :return: Nothing
+    :return: Id of shirt added
     """
     cursor = db.cursor()
     cursor.execute("""INSERT INTO shirt (name, color, size, amount, price)
@@ -147,10 +153,11 @@ def add_shirt(name: str, color: str, size: str, amount: int, price: float):
                     """, [name, color, size, amount, price]
                    )
     db.commit()
-    return
+    return cursor.lastrowid
 
 
-def update_shirt(shirt_id: int, name: str, color: str, size: str, amount: int, price: float):
+def update_shirt(shirt_id: int, name: str = None, color: str = None, size: str = None,
+                 amount: int = None, price: float = None):
     """Updates shirt with new information
 
     :param shirt_id: Id of the shirt (this can't be changed)
@@ -159,7 +166,7 @@ def update_shirt(shirt_id: int, name: str, color: str, size: str, amount: int, p
     :param size: Size of the shirt
     :param amount: Amount of shirts
     :param price: Price of the shirt
-    :return: Nothing
+    :return: 1 if shirt was updated, 0 if not
     """
     cursor = db.cursor()
     cursor.execute("""UPDATE shirt
@@ -169,14 +176,14 @@ def update_shirt(shirt_id: int, name: str, color: str, size: str, amount: int, p
                     """, [name, color, size, amount, price, shirt_id]
                    )
     db.commit()
-    return
+    return cursor.rowcount
 
 
 def delete_shirt(shirt_id: int):
     """Adds new shirt to database
 
     :param shirt_id: Name of the shirt
-    :return: Nothing
+    :return: Amount of shirts deleted (0 or 1)
     """
     cursor = db.cursor()
     cursor.execute("""DELETE FROM shirt
@@ -184,18 +191,18 @@ def delete_shirt(shirt_id: int):
                     """, [shirt_id]
                    )
     db.commit()
+    return cursor.rowcount
 
 
 def delete_all_shirts():
     """Deletes all shirts from the database
 
-    :return: Nothing left to return
+    :return: Amount of shirts deleted
     """
     cursor = db.cursor()
-    cursor.execute("""DELETE FROM shirt
-                        """
-                   )
+    cursor.execute("DELETE FROM shirt")
     db.commit()
+    return cursor.rowcount
 
 
 def result_as_json(cursor):
