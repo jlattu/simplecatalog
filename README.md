@@ -16,6 +16,6 @@ Made with:
 * AngularJS
 
 Currently lacking:
-* Tests
+* Tests for AngularJS (catalog.py is unit tested)
 
 Needs Python and Flask installed to be able to run
