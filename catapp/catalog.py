@@ -156,8 +156,8 @@ def add_shirt(name: str, color: str, size: str, amount: int, price: float):
     return cursor.lastrowid
 
 
-def update_shirt(shirt_id: int, name: str = None, color: str = None, size: str = None,
-                 amount: int = None, price: float = None):
+def update_shirt(shirt_id: int, name: str, color: str, size: str,
+                 amount: int, price: float):
     """Updates shirt with new information
 
     :param shirt_id: Id of the shirt (this can't be changed)
